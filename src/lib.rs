@@ -68,6 +68,7 @@ pub mod url;
 pub mod uuid;
 #[cfg(feature = "worleynoise")]
 pub mod worleynoise;
+pub mod visibility;
 
 #[cfg(all(not(target_pointer_width = "32"), not(feature = "allow_non_32bit")))]
 compile_error!(

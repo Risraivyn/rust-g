@@ -19,7 +19,8 @@ crate-type = ["cdylib"]
 opt-level = 3
 codegen-units = 1
 lto = true
-debug = true
+debug = false
+strip = true
 
 [dependencies]
 thiserror = "2.0"
@@ -81,7 +82,7 @@ base32 = { version = "0.5.1", optional = true }
 qrcode = { version = "0.14.1", optional = true, features = ["image", "svg"]}
 zeroize = { version = "1.9", optional = true }
 iconforge = { version = "1.0.3", optional = true, features = ["spritesheet", "gags"] }
-
+byondapi = { git = "https://github.com/spacestation13/byondapi-rs.git", default-features = false, features = ["byond-516-1682"] }
 [features]
 default = [
     "acreplace",
