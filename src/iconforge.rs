@@ -28,9 +28,9 @@ byond_fn!(fn iconforge_generate(file_path, spritesheet_name, sprites, hash_icons
     Some(match catch_panic(|| spritesheet::spritesheet_multisize_from_universal_icons_str(&file_path, &spritesheet_name, &sprites, &hash_icons, &generate_dmi, &flatten)) {
         Ok(o) => match o {
             Ok(o) => o,
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         },
-        Err(e) => e.to_string()
+        Err(e) => e.to_string(),
     })
 });
 
@@ -41,15 +41,16 @@ byond_fn!(fn iconforge_generate_async(file_path, spritesheet_name, sprites, hash
     let hash_icons = hash_icons.to_owned();
     let generate_dmi = generate_dmi.to_owned();
     let flatten = flatten.to_owned();
+    let job_desc = format!("iconforge_generate_async: {}", spritesheet_name);
     Some(jobs::start(move || {
         match catch_panic(|| spritesheet::spritesheet_multisize_from_universal_icons_str(&file_path, &spritesheet_name, &sprites, &hash_icons, &generate_dmi, &flatten)) {
             Ok(o) => match o {
                 Ok(o) => o,
-                Err(e) => e.to_string()
+                Err(e) => e.to_string(),
             },
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         }
-    }))
+    }, job_desc))
 });
 
 byond_fn!(fn iconforge_generate_headless(file_path, sprites, flatten) {
@@ -59,7 +60,7 @@ byond_fn!(fn iconforge_generate_headless(file_path, sprites, flatten) {
     Some(match catch_panic::<_, SpritesheetResult>(|| spritesheet::spritesheet_from_universal_icons_str(&file_path, &sprites, &flatten)) {
         Ok(o) => match serde_json::to_string::<SpritesheetResult>(&o) {
             Ok(o) => o,
-            Err(_) => String::from("{\"error\":\"Serde serialization error\"}") // nigh impossible but whatever
+            Err(_) => String::from("{\"error\":\"Serde serialization error\"}"),
         },
         Err(e) => match serde_json::to_string::<SpritesheetResult>(&SpritesheetResult {
             file_path: None,
@@ -68,8 +69,8 @@ byond_fn!(fn iconforge_generate_headless(file_path, sprites, flatten) {
             error: Some(e.to_string()),
         }) {
             Ok(o) => o,
-            Err(_) => String::from("{\"error\":\"Serde serialization error\"}")
-        }
+            Err(_) => String::from("{\"error\":\"Serde serialization error\"}"),
+        },
     })
 });
 
@@ -80,9 +81,9 @@ byond_fn!(fn iconforge_cache_valid(input_hash, dmi_hashes, sprites) {
     Some(match catch_panic(|| spritesheet::cache_valid(&input_hash, &dmi_hashes, &sprites)) {
         Ok(o) => match o {
             Ok(o) => o,
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         },
-        Err(e) => e.to_string()
+        Err(e) => e.to_string(),
     })
 });
 
@@ -90,15 +91,16 @@ byond_fn!(fn iconforge_cache_valid_async(input_hash, dmi_hashes, sprites) {
     let input_hash = input_hash.to_owned();
     let dmi_hashes = dmi_hashes.to_owned();
     let sprites = sprites.to_owned();
+    let job_desc = format!("iconforge_cache_valid_async: {}", input_hash);
     Some(jobs::start(move || {
         match catch_panic(|| spritesheet::cache_valid(&input_hash, &dmi_hashes, &sprites)) {
             Ok(o) => match o {
                 Ok(o) => o,
-                Err(e) => e.to_string()
+                Err(e) => e.to_string(),
             },
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         }
-    }))
+    }, job_desc))
 });
 
 byond_fn!(fn iconforge_load_gags_config(config_path, config_json, config_icon_path) {
@@ -108,9 +110,9 @@ byond_fn!(fn iconforge_load_gags_config(config_path, config_json, config_icon_pa
     Some(match catch_panic(|| gags::load_gags_config(&config_path, &config_json, &config_icon_path)) {
         Ok(o) => match o {
             Ok(o) => o,
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         },
-        Err(e) => e.to_string()
+        Err(e) => e.to_string(),
     })
 });
 
@@ -118,15 +120,16 @@ byond_fn!(fn iconforge_load_gags_config_async(config_path, config_json, config_i
     let config_path = config_path.to_owned();
     let config_json = config_json.to_owned();
     let config_icon_path = config_icon_path.to_owned();
+    let job_desc = format!("iconforge_load_gags_config_async: {}", config_path);
     Some(jobs::start(move || {
         match catch_panic(|| gags::load_gags_config(&config_path, &config_json, &config_icon_path)) {
             Ok(o) => match o {
                 Ok(o) => o,
-                Err(e) => e.to_string()
+                Err(e) => e.to_string(),
             },
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         }
-    }))
+    }, job_desc))
 });
 
 byond_fn!(fn iconforge_gags(config_path, colors, output_dmi_path) {
@@ -136,9 +139,9 @@ byond_fn!(fn iconforge_gags(config_path, colors, output_dmi_path) {
     Some(match catch_panic(|| gags::gags(&config_path, &colors, &output_dmi_path)) {
         Ok(o) => match o {
             Ok(o) => o,
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         },
-        Err(e) => e.to_string()
+        Err(e) => e.to_string(),
     })
 });
 
@@ -146,13 +149,14 @@ byond_fn!(fn iconforge_gags_async(config_path, colors, output_dmi_path) {
     let config_path = config_path.to_owned();
     let colors = colors.to_owned();
     let output_dmi_path = output_dmi_path.to_owned();
+    let job_desc = format!("iconforge_gags_async: {}", config_path);
     Some(jobs::start(move || {
         match catch_panic(|| gags::gags(&config_path, &colors, &output_dmi_path)) {
             Ok(o) => match o {
                 Ok(o) => o,
-                Err(e) => e.to_string()
+                Err(e) => e.to_string(),
             },
-            Err(e) => e.to_string()
+            Err(e) => e.to_string(),
         }
-    }))
+    }, job_desc))
 });
